@@ -21,7 +21,7 @@
       - create-react-app : 리액트 셋팅이 된 boilerplate를 만들기 쉽게 도와주는 라이브러리
       - blog : 프로젝트 이름
 
-   2. success 메세지가 뜨면 설치 끝
+   2. success 메세지가 뜨면 설치 완료
 
 6. 프로젝트 실행방법
 
