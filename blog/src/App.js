@@ -10,6 +10,7 @@ function App() {
   let [글제목, 글제목변경] = useState(['남자 코트 추천', '강남 맛집 추천', '재밌는 영화 추천']);
   let [따봉, 따봉변경] = useState([0, 0, 0]);
   let [modal, modal변경] = useState(false)
+  let [누른제목, 누른제목변경] = useState(0)
   var ar = [2, 3, 4]
 
   function 제목바꾸기() {
@@ -33,27 +34,28 @@ function App() {
       {
         글제목.map((value, idx) => {
           return ( <div className="list">
-              <h3>{ value } <span onClick={ () => { 따봉바꾸기(idx) } }>하트</span>{ 따봉[idx] }</h3>
+              <h3 onClick={ () => { 누른제목변경(idx) } }>{ value } <span onClick={ () => { 따봉바꾸기(idx) } }>하트</span>{ 따봉[idx] }</h3>
               <p>2월 {17 + idx}일 발행</p>
               <hr/>
             </div>
           )
         })
       }
-      <button onClick={ () => {modal변경(modal ? false : true)} }>버튼</button>
+
+      <button onClick={ () => {modal변경(!modal)} }>버튼</button>
       {
         modal === true
-        ? <Modal />
+        ? <Modal 글제목={ 글제목 } 누른제목={ 누른제목 }/>
         : null
       }
     </div>
   );
 }
 
-function Modal() {
+function Modal(props) {
   return (
     <div className="modal">
-      <h2>제목</h2>
+      <h2>제목 { props.글제목[props.누른제목] }</h2>
       <p>날짜</p>
       <p>상세 내용</p>
     </div>
