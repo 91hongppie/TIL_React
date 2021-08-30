@@ -9,14 +9,21 @@ function App() {
   let posts = '강남 고기 맛집';
   let [글제목, 글제목변경] = useState(['남자 코트 추천', '강남 맛집 추천', '재밌는 영화 추천']);
   let [따봉, 따봉변경] = useState([0, 0, 0]);
-  let [modal, modal변경] = useState(false)
-  let [누른제목, 누른제목변경] = useState(0)
+  let [modal, modal변경] = useState(false);
+  let [누른제목, 누른제목변경] = useState(0);
+  let [입력값, 입력값변경] = useState('')
   var ar = [2, 3, 4]
 
   function 제목바꾸기() {
     let newArray = [...글제목];
     newArray[0] = '여자 코트 추천'
     글제목변경(newArray)
+  }
+
+  function 글발행하기(value) {
+    let newArray = [value, ...글제목];
+    글제목변경(newArray)
+    
   }
 
   function 따봉바꾸기(idx) {
@@ -33,7 +40,7 @@ function App() {
       <button onClick={ 제목바꾸기 }>버튼</button>
       {
         글제목.map((value, idx) => {
-          return ( <div className="list">
+          return ( <div className="list" key={ idx }>
               <h3 onClick={ () => { 누른제목변경(idx) } }>{ value } <span onClick={ () => { 따봉바꾸기(idx) } }>하트</span>{ 따봉[idx] }</h3>
               <p>2월 {17 + idx}일 발행</p>
               <hr/>
@@ -41,6 +48,12 @@ function App() {
           )
         })
       }
+
+      <div className="publish">
+        <input onChange={ (e) => { 입력값변경(e.target.value)} } />
+        <button onClick={ () => { 글발행하기(입력값) } }>저장</button>
+      </div>
+
 
       <button onClick={ () => {modal변경(!modal)} }>버튼</button>
       {
