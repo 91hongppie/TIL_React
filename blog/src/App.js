@@ -1,76 +1,56 @@
-/* eslint-disable */
-
-import React, { useState } from 'react';
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
 
 function App() {
 
-  let posts = '강남 고기 맛집';
-  let [글제목, 글제목변경] = useState(['남자 코트 추천', '강남 맛집 추천', '재밌는 영화 추천']);
-  let [따봉, 따봉변경] = useState([0, 0, 0]);
-  let [modal, modal변경] = useState(false);
-  let [누른제목, 누른제목변경] = useState(0);
-  let [입력값, 입력값변경] = useState('')
-  var ar = [2, 3, 4]
+  const [글제목, 글제목변경] = useState(['남자코트 추천', '강남 우동맛집', '파이썬독학'])
+  const [따봉, 따봉변경] = useState(0)
+  const [모달, 모달변경] = useState(false)
+  // const posts = '강남 고기 맛집'
 
-  function 제목바꾸기() {
-    let newArray = [...글제목];
-    newArray[0] = '여자 코트 추천'
-    글제목변경(newArray)
+  function 모달바꾸기() {
+    모달변경(!모달)
   }
 
-  function 글발행하기(value) {
-    let newArray = [value, ...글제목];
-    글제목변경(newArray)
-    
-  }
-
-  function 따봉바꾸기(idx) {
-    let newArray = [...따봉]
-    newArray[idx] += 1
-    따봉변경(newArray)
-  }
+  // function 제목바꾸기() {
+  //   var newArray = [...글제목]
+  //   newArray[0] = '여자코트 추천' 
+  //   글제목변경(newArray)
+  // }
 
   return (
-    <div className="App">
-      <div className="black-nav">
+    <div className='App'>
+      <div className='black-nav'>
         <div>개발 Blog</div>
       </div>
-      <button onClick={ 제목바꾸기 }>버튼</button>
-      {
-        글제목.map((value, idx) => {
-          return ( <div className="list" key={ idx }>
-              <h3 onClick={ () => { 누른제목변경(idx) } }>{ value } <span onClick={ () => { 따봉바꾸기(idx) } }>하트</span>{ 따봉[idx] }</h3>
-              <p>2월 {17 + idx}일 발행</p>
-              <hr/>
-            </div>
-          )
-        })
-      }
-
-      <div className="publish">
-        <input onChange={ (e) => { 입력값변경(e.target.value)} } />
-        <button onClick={ () => { 글발행하기(입력값) } }>저장</button>
+      <div className='list'>
+        <h3> {글제목[0] } <span onClick={ () => { 따봉변경(따봉 + 1) } }>👍</span> { 따봉 }</h3>
+        <p>2월 17일 발행</p>
+        <hr/>
       </div>
-
-
-      <button onClick={ () => {modal변경(!modal)} }>버튼</button>
-      {
-        modal === true
-        ? <Modal 글제목={ 글제목 } 누른제목={ 누른제목 }/>
-        : null
-      }
+      <div className='list'>
+        <h3> {글제목[1] } <span onClick={ () => { 따봉변경(따봉 + 1) } }>👍</span> { 따봉 }</h3>
+        <p>2월 18일 발행</p>
+        <hr/>
+      </div>
+      <div className='list'>
+        <h3 onClick={ 모달바꾸기 }> { 글제목[2] }</h3>
+        <p>2월 19일 발행</p>
+        <hr/>
+      </div>
+      { 모달 ? <Modal /> : null }
+     
     </div>
-  );
+    )
 }
 
-function Modal(props) {
+function Modal() {
   return (
-    <div className="modal">
-      <h2>제목 { props.글제목[props.누른제목] }</h2>
+    
+    <div className='modal'>
+      <h2>제목</h2>
       <p>날짜</p>
-      <p>상세 내용</p>
+      <p>상세내용</p>
     </div>
   )
 }
