@@ -1,4 +1,4 @@
-import './App.css';
+import './App.module.css';
 import { Button, Navbar, Container, Nav, Row, Col } from 'react-bootstrap'
 import { useState } from 'react';
 import { data, a } from './data'
