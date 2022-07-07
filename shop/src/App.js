@@ -1,13 +1,14 @@
 import './App.module.css';
-import { Button, Navbar, Container, Nav, Row, Col } from 'react-bootstrap'
+import { Button, Navbar, Container, Nav, Row, Col, Toast } from 'react-bootstrap'
 import { useState } from 'react';
 import { data, a } from './data'
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
 import Detail from './routes/Detail'
+import axios from 'axios'
 
 function App() {
 
-  let [shoes] = useState(data);
+  let [shoes, setShoes] = useState(data);
   let navigate = useNavigate();
 
   return (
@@ -24,7 +25,7 @@ function App() {
       </Navbar>
 
       <Routes>
-        <Route path="/" element={<Main shoes={shoes}/>} />
+        <Route path="/" element={<Main shoes={shoes} setShoes={setShoes}/>} />
         <Route path="/detail/:id" element={<Detail shoes={shoes} />} />
         <Route path="/about" element={<About />} >
           <Route path='member' element={<div>멤버임</div>} />
@@ -64,6 +65,8 @@ function About() {
 
 function Main(props) {
   const shoes = props.shoes
+  const setShoes = props.setShoes
+  const [count, setCount] = useState(0)
   return (
   <>
     <div className={'main-bg'}> </div>
@@ -75,12 +78,30 @@ function Main(props) {
           })}
       </div>
     </div>
+    <button onClick={() => {
+      if (count < 2) {
+
+        axios.get(`https://codingapple1.github.io/shop/data${count+2}.json`).then((res) => {
+          setShoes([...shoes, ...res.data])
+          setCount(count+1)
+        }).catch((e) => {
+          console.log(e)
+        }).finally(() => {
+          
+        })
+        
+      } else {
+
+        alert('더 이상 신발이 없습니다.')
+      }
+    }}>더보기</button>
   </>
   )
 }
 
 function Card(props) {
     const shoes = props.value
+
   return (
       <div className={'col-md-4'}>
         <img src={`https://codingapple1.github.io/shop/shoes${props.i + 1}.jpg`} width={'80%'}/>
