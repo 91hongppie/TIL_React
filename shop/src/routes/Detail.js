@@ -1,11 +1,13 @@
-import {useEffect, useState} from 'react';
+import {useContext, useEffect, useState} from 'react';
 import { Nav } from 'react-bootstrap';
 import { useParams } from "react-router-dom";
 
-
+import { Context1 } from './../App.js';
 
 function Detail(props) {
 
+    let {재고, shoes} = useContext(Context1)
+    console.log(재고, shoes)
     let [count, setCount] = useState(0);
     let [alertView, setAlertView] = useState(true);
     let [input, setInput] = useState('');
@@ -44,7 +46,7 @@ function Detail(props) {
                     </div>
                 : null
             }
-
+            {재고}
             { count }
             <button onClick={() => {
                 setCount(count+1)
@@ -60,7 +62,7 @@ function Detail(props) {
                     <button className="btn btn-danger">주문하기</button> 
                 </div>
             </div>
-            
+
             <Nav variant="tabs" defaultActiveKey="link0">
                 {[0, 1, 2].map((value) => {
                     
@@ -76,17 +78,18 @@ function Detail(props) {
     )
 }
 
-function TabContent(props) {
-    const tab = props.tab
-    if (tab === 0) {
-        return <div>내용0</div>
-    } 
-    if (tab === 1) {
-        return <div>내용1</div>
-    } 
-    if (tab === 2) {
-        return <div>내용2</div>
-    }
+function TabContent({tab}) {
+
+    let [fade, setFade] = useState('')
+    let { 재고 } = useContext(Context1);
+    useEffect(() => {
+        setTimeout(() => { setFade('end') }, 100)
+        return () => { setFade('') }
+    }, [tab])
+
+    return <div className={`start ${fade}`}>
+        {[ <div>{재고}</div>, <div>내용1</div>, <div>내용2</div>][tab]}
+    </div>
 }
 
 
