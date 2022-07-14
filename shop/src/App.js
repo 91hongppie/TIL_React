@@ -5,6 +5,7 @@ import { data, a } from './data'
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
 import Detail from './routes/Detail'
 import axios from 'axios'
+import Cart from "./routes/Cart";
 
 export let Context1 = createContext()
 
@@ -44,6 +45,8 @@ function App() {
         </Route>
 
         <Route path='/*' element={<div>없는 페이지잉이이익</div>}/>
+
+          <Route path="/cart" element={<Cart />} />
       </Routes>
 
 
