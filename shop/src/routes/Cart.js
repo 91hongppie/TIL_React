@@ -1,6 +1,7 @@
 import {Table} from "react-bootstrap";
 import {useDispatch, useSelector} from "react-redux";
-import { setUser, setStock } from '../store'
+import { setAge } from '../store/userSlice';
+import { setStock } from '../store';
 
 function Cart() {
 
@@ -9,7 +10,10 @@ function Cart() {
 
     return (
         <div>
-            {state.user}의 장바구니
+            <h6>{state.user.name} {state.user.age}의 장바구니</h6>
+            <button onClick={() => {
+                dispatch(setAge(Math.floor(Math.random() * 10)))
+            }}>버튼</button>
             <Table>
                 <thead>
                 <tr>
@@ -22,11 +26,11 @@ function Cart() {
                 {state.stock.map((el, idx) => {
                     return (
                         <tr key={idx}>
-                            <td>{idx+1}</td>
+                            <td>{el.id+1}</td>
                             <td>{el.name}</td>
                             <td>{el.count}</td>
                             <td><button onClick={() => {
-                                dispatch(setStock({el, idx}));
+                                dispatch(setStock({el}));
                             }}>+</button></td>
                         </tr>
                     )

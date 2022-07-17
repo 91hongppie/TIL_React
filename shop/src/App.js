@@ -1,6 +1,6 @@
 import './App.css';
 import { Button, Navbar, Container, Nav, Row, Col, Toast } from 'react-bootstrap'
-import {createContext, useState} from 'react';
+import {createContext, useEffect, useState} from 'react';
 import { data, a } from './data'
 import { Routes, Route, Link, useNavigate, Outlet } from 'react-router-dom'
 import Detail from './routes/Detail'
@@ -10,6 +10,14 @@ import Cart from "./routes/Cart";
 export let Context1 = createContext()
 
 function App() {
+
+  useEffect(() => {
+    if (!localStorage.getItem('watched')) {
+      localStorage.setItem('watched', JSON.stringify([]))
+    }
+  }, [])
+
+
 
   let [shoes, setShoes] = useState(data);
   let [재고] = useState([10, 11, 12])
@@ -23,7 +31,7 @@ function App() {
           <Navbar.Brand onClick={() => { navigate('/') }}>ShoeShop</Navbar.Brand>
           <Nav className="me-auto">
             <Nav.Link onClick={() => { navigate('/') }}>Home</Nav.Link>
-            <Nav.Link onClick={() => { navigate('/detail') }}>Cart</Nav.Link>
+            <Nav.Link onClick={() => { navigate('/cart') }}>Cart</Nav.Link>
           </Nav>
         </Container>
       </Navbar>
@@ -83,7 +91,7 @@ function Main(props) {
     <div className={'container'}>
       <div className={'row'}>
           {shoes.map((value, idx) => {
-            return <Card value={value} i={idx} />
+            return <Card value={value} i={idx} key={idx}/>
 
           })}
       </div>

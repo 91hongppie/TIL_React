@@ -1,26 +1,21 @@
 import {useContext, useEffect, useState} from 'react';
 import { Nav } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from "react-router-dom";
+import { addItem } from '../store.js';
 
 import { Context1 } from './../App.js';
 
 function Detail(props) {
-
+    let state = useSelector(state => state)
+    console.log(state.wishList)
     let {재고, shoes} = useContext(Context1)
-    console.log(재고, shoes)
+    let dispatch = useDispatch()
     let [count, setCount] = useState(0);
-    let [alertView, setAlertView] = useState(true);
+
     let [input, setInput] = useState('');
     let [tab, setTab] = useState(0);
-
-    useEffect(() => {
-        let a = setTimeout(() => {
-            setAlertView(!alertView)
-        }, 2000)
-        return () => {
-            clearTimeout(a);
-        }
-    }, [])
+    
 
     useEffect(() => {
         if (isNaN(input)) {
@@ -37,15 +32,19 @@ function Detail(props) {
 
     let {id} = useParams()
     let shoe = props.shoes.find((value) => value.id === parseInt(id))
+    useEffect(() => {
+        const localData = JSON.parse(localStorage.getItem('watched'));
+        localData.push(shoe.id);
+
+        localStorage.setItem('watched', JSON.stringify(Array.from(new Set(localData))))
+
+    }, [])
+
 
     return (
         <div className="container">
-            { alertView
-                ?   <div className={'alert alert-warning'}>
-                        2초이내 구매시 할인
-                    </div>
-                : null
-            }
+            <div>내 장바구니 </div>
+            {/* <h2>{state.wishList}</h2> */}
             {재고}
             { count }
             <button onClick={() => {
@@ -59,14 +58,17 @@ function Detail(props) {
                     <h4 className="pt-5">{shoe.title}</h4>
                     <p>{shoe.content}</p>
                     <p>{shoe.price}</p>
-                    <button className="btn btn-danger">주문하기</button> 
+                    <button className="btn btn-danger" onClick={() => {
+                        dispatch(addItem({id: 3, name: 'Red Knit', count : 1}));
+                        console.log(state.stock)
+                    }}>주문하기</button> 
                 </div>
             </div>
 
             <Nav variant="tabs" defaultActiveKey="link0">
-                {[0, 1, 2].map((value) => {
+                {[0, 1, 2].map((value, idx) => {
                     
-                return <Nav.Item>
+                return <Nav.Item key={idx}>
                     <Nav.Link eventKey={`link${value}`} onClick={() => {
                         setTab(value)
                     }}>{`버튼${value}`}</Nav.Link>

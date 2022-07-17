@@ -1,17 +1,7 @@
 import {configureStore, createSlice} from '@reduxjs/toolkit'
+import user from './store/userSlice'
 
 
-let user = createSlice({
-    name: 'user',
-    initialState: 'kim',
-    reducers: {
-        setUser(state, input) {
-            return input.payload;
-        }
-    },
-})
-
-export let { setUser } = user.actions
 
 let stock = createSlice({
     name: 'stock',
@@ -21,17 +11,49 @@ let stock = createSlice({
     ],
     reducers: {
         setStock(state, input) {
-            state[input.payload.idx].count += 1
-            return state;
+            state.map((value) => {
+                if (value.id === input.payload.el.id) {
+                    value.count++
+                }
+                return value;
+            })
+        },
+        addItem(state, action) {
+
+            const item = state.find((value) => {
+                return value.id === action.payload.id;
+            })
+            if (item) {
+                item.count++
+            } else {
+                state.push(action.payload)
+            }
         }
     }
 })
 
-export let { setStock } = stock.actions
+export let { setStock, addItem } = stock.actions
+
+let wishList = createSlice({
+    name: 'wishList',
+    initialState: {},
+    reducers: {
+        setWishList(state, action) {
+            if (state[action.payload.title]) { 
+                state[action.payload.title] += 1 
+            } else {
+                state[action.payload.title] = 1
+            }
+        }
+    }
+}, )
+
+export let { setWishList } = wishList.actions;
 
 export default configureStore({
     reducer: {
         user: user.reducer,
         stock: stock.reducer,
+        wishList: wishList.reducer
     }
 })
